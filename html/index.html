@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>comedy</title>
+</head>
+
+<body>
+    <button data-comedy="chapelle">dave chapelle</button>
+    <button data-comedy="tim+and+eric">tim & eric</button>
+    <button data-comedy="chris+rock">chris rock</button>
+    <button data-comedy="richard+pryor">richard pryor</button>
+    <button data-comedy="robbin+williams">robbin williams</button>
+    <button data-comedy="rodney+dangerfield">rodney dangerfield</button>
+    <button data-comedy="redd+foxx">redd foxx</button>
+    <button data-comedy="jeremy+clarkson">jeremy clarkson</button>
+    <button data-comedy="george+carlin">george carlin</button>
+    <button data-comedy="eddie+murphy">eddie murphy</button>
+    <button data-comedy="ricky+gervais">ricky gervais</button>
+    <button data-comedy="adam+sandler">adam sandler</button>
+    <div id="gifs-show-here">
+    </div>
+
+    <div class="container">
+        <div id="newButtons">
+            <form id="comedy-box">
+                <label for="comedian-input">search for comedians here</label>
+                <input type="text" id="comedy-input">
+                <br>
+                <input id="add-comedian" type="submit" value="search-comedians">
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $("button").on("click", function () {
+            var comedy = $(this).attr("data-comedy");
+
+            var queryUrl = "https://api.giphy.com/v1/gifs/search?q=" + comedy + "&api_key=pMXP4ruGZYVI4PqFd7KNlsRAC5Nz46Th&limit=10";
+
+            $.ajax({
+                url: queryUrl,
+                method: "GET"
+            })
+
+                .then(function (response) {
+                    var results = response.data;
+                    console.log(response);
+
+                    for (var i = 0; i < results.length; i++) {
+                        var comedyDiv = $("<div>");
+                        var p = $("<p>").text("Rating: " + results[i].rating);
+                        var comedyImage = $("<img>");
+                        console.log(comedyImage);
+                        comedyImage.attr("src", results[i].images.fixed_height.url);
+                        comedyDiv.append(p);
+                        comedyDiv.append(comedyImage);
+                        $("#gifs-show-here").prepend(comedyDiv);
+
+                    }
+                });
+
+        });
+
+        function alertcomedian() {
+            var comedianName = $(this).attr("data-comedy");
+
+            alert(comedianName);
+        }
+        function renderButtons() {
+            $("#buttons-view").empty();
+            for (var i = 0; i < comedy.length; i++) {
+                var a = $("<button>");
+                a.addClass("data-comedy");
+
+                a.attr("data-comedy", data - comedy[i]);
+
+                a.text(data - movies[i]);
+
+                $("#buttons-view").append(a);
+            }
+
+        }
+        $(document).on("click", ".data-comedy", "#gifs-show-here");
+        renderButtons();
+
+        // $(".gif").on("click", function () {
+        //     var state = $(this).attr("data-state");
+        //     if (state === "animate") {
+        //         $(this).attr("src", $(this).attr("data-still"));
+        //         $(this).attr("data-state", "still");
+        //     } else {
+        //         $(this).attr("src", $(this).attr("data-animate"));
+        //         $(this).attr("data-state", "animate");
+        //     }
+        
+
+    </script>
+
+</body>
+
+</html>
+
+
+<!-- //unsure of why the render buttons function wont work. I figured the ".gif" coming from the end of the url from each of the images would count as enough to get them to start and stop. That had to be commented out because it was interfering in some way with making the gifs show for the buttons.  -->
